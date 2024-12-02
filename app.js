@@ -1,24 +1,29 @@
-window.onload = function(){
+document.addEventListener('DOMContentLoaded', () => {
     var searchBtn = document.getElementById('search-button');
+    var searchInput = document.getElementById('search-input');
+    var result = document.getElementById('result');
 
-    searchBtn.addEventListener('click', function(){
+    searchBtn.addEventListener('click', function() {
         const httpRequest = new XMLHttpRequest();
 
-        let url = "http://localhost:8080/superheroes.php";
+        
+        let url = "superheroes.php";
+        let searchVal = searchInput.value.trim();
+        url += "?query=" + encodeURIComponent(searchVal);
 
         httpRequest.onreadystatechange = getXml;
         httpRequest.open('GET', url);
         httpRequest.send();
-        
-        function getXml(){
-            if(httpRequest.readyState === XMLHttpRequest.DONE){
-                if (httpRequest.status === 200){
+
+        function getXml() {
+            if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                if (httpRequest.status === 200) {
                     let response = httpRequest.responseText;
-                    alert(response);
-                }else{
-                    alert('There was a problem with the request.');
+                    result.innerHTML = response; 
+                } else {
+                    result.innerHTML = 'There was a problem with the request.'; 
                 }
             }
         }
-    })
-};
+    });
+});
